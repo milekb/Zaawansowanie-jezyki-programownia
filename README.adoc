@@ -54,7 +54,7 @@ W moim projekcie zająłem się refaktoryzacją projektu "Warcaby" napisanego pr
 
 image::warcaby.jpg[Warcaby]
 
-##Refaktoryzacja
+## Refaktoryzacja
 
 Wykorzystując narzędzie Reek sprawdziłem ilość zapachów w pliku board.rb. Otrzymałem następującą listę:
 
@@ -91,7 +91,7 @@ board.rb -- 26 warnings:
 
 Ponieważ plik zawiera wiele zapachów zajmę się tylko jego pięcioma wybranymi.
 
-##Duplicate Method II
+## Duplicate Method II
 
 ```Ruby
 [14, 15, 16, 17, 20]:DuplicateMethodCall: Board#initialize calls 'colors[0]' 5 times
@@ -147,7 +147,7 @@ Po refaktoryzacji:
 Duplicate Method jest jednym z najłatwiej zauważalnych zapachów kodu i zarazem naprostrzym do naprawienia. Zachodzi gdy dane wywoływane w metodzie są wykonywane dwa lub więcej razy w tym samym kontekscie.
 Metoda odpowiedzialna za rozstawianie pionków w której powtarza się 4 razy Square.new(colors[0]), a ponieważ jest to stała wartość, która nie zmienia się co wywołanie, zatem optymalniej było by wywoływać ją tylko raz, a wynik przekazywać w innych miejscach.
 
-##Duplicate Method II
+## Duplicate Method II
 
 ```Ruby
 [28, 28, 30, 30]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source)' 4 times
@@ -227,7 +227,7 @@ Po refaktoryzacji:
 ```
 Tutaj mamy do czynienia z metodami zawierającymi tę same pary parametrów. W takim przypadku taki obiekt może być strukturą lokalizacji reperezentującą daną parę informacji na temat pionka.
 
-##Boolean/Control Parameter
+## Boolean/Control Parameter
 
 ```Ruby
   [66]:BooleanParameter: Board#on_board? has boolean parameter 'strict' [https://github.com/troessner/reek/blob/master/docs/Boolean-Parameter.md]
@@ -264,7 +264,7 @@ Po refaktoryzacji:
 Predykat ten służy zapewne do określenia czy dany pionek jest na tablicy czy nie. Ten rodzaj kodu nazywa się boolowskim zapachem parametru. W tym przypadku najlepszym sposobem będzie podzilenie predykatu na dedykowane metody, z których każda implementuje jedną ze ścieżek kodu.
 
 
-##Replace temp with query/Primitive Obsession
+## Replace temp with query/Primitive Obsession
 
 Przed refaktoryzacją:
 ```Ruby
