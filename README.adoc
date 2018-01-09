@@ -91,7 +91,7 @@ board.rb -- 26 warnings:
 
 Ponieważ plik zawiera wiele zapachów zajmę się tylko jego pięcioma wybranymi.
 
-## Duplicate Method II
+## Duplicate Method
 
 ```Ruby
 [14, 15, 16, 17, 20]:DuplicateMethodCall: Board#initialize calls 'colors[0]' 5 times
