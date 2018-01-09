@@ -1,5 +1,26 @@
 modules Checker
 class Points
+  ############################################
+  def initialize()
+    @board = {}
+    colors = [Square::BLACK, Square::WHITE]
+
+    (1..8).each do |row|
+      (1..8).each do |col|
+        sq = Square.new(colors[0])
+        # Place starting pieces on board
+        if (1..3).include?(row) && sq.color == Square::BLACK
+          sq.checker_piece = Piece.new(Piece::BLACK)
+        elsif (6..8).include?(row) && sq.color == Square::BLACK
+          sq.checker_piece = Piece.new(Piece::RED)
+        end
+
+        @board[[row,col]] = sq
+
+        colors << colors.delete_at(0) unless col == 8
+      end
+    end
+  end
 ###############################################
   def check_point_location
     point_loc = @point_source.point_at(@source)

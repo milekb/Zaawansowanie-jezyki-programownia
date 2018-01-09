@@ -9,16 +9,15 @@ class Board
 
     (1..8).each do |row|
       (1..8).each do |col|
-        sq = Square.new(colors[0])
 
         # Place starting pieces on board
-        if (1..3).include?(row) && sq.color == Square::BLACK
-          sq.checker_piece = Piece.new(Piece::BLACK)
-        elsif (6..8).include?(row) && sq.color == Square::BLACK
-          sq.checker_piece = Piece.new(Piece::RED)
+        if (1..3).include?(row) && Square.new(colors[0]).color == Square::BLACK
+          Square.new(colors[0]).checker_piece = Piece.new(Piece::BLACK)
+        elsif (6..8).include?(row) && Square.new(colors[0]).color == Square::BLACK
+          Square.new(colors[0]).checker_piece = Piece.new(Piece::RED)
         end
 
-        @board[[row,col]] = sq
+        @board[[row,col]] = Square.new(colors[0])
 
         colors << colors.delete_at(0) unless col == 8
       end

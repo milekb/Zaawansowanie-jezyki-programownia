@@ -59,39 +59,99 @@ image::warcaby.jpg[Warcaby]
 Wykorzystując narzędzie Reek sprawdziłem ilość zapachów w pliku board.rb. Otrzymałem następującą listę:
 
 ```Ruby
-board.rb -- 25 warnings:
-  [70]:BooleanParameter: Board#on_board? has boolean parameter 'strict' [https://github.com/troessner/reek/blob/master/docs/Boolean-Parameter.md]
-  [72]:ControlParameter: Board#on_board? is controlled by argument 'strict' [https://github.com/troessner/reek/blob/master/docs/Control-Parameter.md]
-  [53, 57, 61]:DataClump: Board takes parameters ['source_loc', 'source_move'] to 3 methods [https://github.com/troessner/reek/blob/master/docs/Data-Clump.md]
-  [30, 30, 32, 32]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source)' 4 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
-  [30, 32]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source).x' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
-  [30, 32]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source).y' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+board.rb -- 26 warnings:
+  [66]:BooleanParameter: Board#on_board? has boolean parameter 'strict' [https://github.com/troessner/reek/blob/master/docs/Boolean-Parameter.md]
+  [68]:ControlParameter: Board#on_board? is controlled by argument 'strict' [https://github.com/troessner/reek/blob/master/docs/Control-Parameter.md]
+  [50, 54, 58]:DataClump: Board takes parameters ['source_loc', 'source_move'] to 3 methods [https://github.com/troessner/reek/blob/master/docs/Data-Clump.md]
+  [28, 28, 30, 30]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source)' 4 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [28, 30]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source).x' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [28, 30]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source).y' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
   [10, 11]:DuplicateMethodCall: Board#initialize calls '(1..8).each' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
-  [15, 17]:DuplicateMethodCall: Board#initialize calls 'sq.color == Square::BLACK' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
-  [15, 17]:DuplicateMethodCall: Board#initialize calls 'sq.color' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
-  [94, 100]:DuplicateMethodCall: Board#print_board calls '(1..8).each' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
-  [15, 16, 17, 18]:FeatureEnvy: Board#initialize refers to 'sq' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Feature-Envy.md]
-  [73, 75]:FeatureEnvy: Board#on_board? refers to 'position' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Feature-Envy.md]
-  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@board2' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [14, 16]:DuplicateMethodCall: Board#initialize calls 'Square.new(colors[0]).color == Square::BLACK' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [14, 16]:DuplicateMethodCall: Board#initialize calls 'Square.new(colors[0]).color' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [14, 15, 16, 17, 20]:DuplicateMethodCall: Board#initialize calls 'colors[0]' 5 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [88, 94]:DuplicateMethodCall: Board#print_board calls '(1..8).each' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [14, 15, 16, 17, 20, 22, 22]:FeatureEnvy: Board#initialize refers to 'colors' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Feature-Envy.md]
+  [69, 71]:FeatureEnvy: Board#on_board? refers to 'position' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Feature-Envy.md]
   [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@loc' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
   [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@move' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@pawn' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
   [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@point_source' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
   [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@result' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
   [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@results' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
   [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@source' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
   [1]:IrresponsibleModule: Board has no descriptive comment [https://github.com/troessner/reek/blob/master/docs/Irresponsible-Module.md]
   [11]:NestedIterators: Board#initialize contains iterators nested 2 deep [https://github.com/troessner/reek/blob/master/docs/Nested-Iterators.md]
-  [100]:NestedIterators: Board#print_board contains iterators nested 2 deep [https://github.com/troessner/reek/blob/master/docs/Nested-Iterators.md]
+  [94]:NestedIterators: Board#print_board contains iterators nested 2 deep [https://github.com/troessner/reek/blob/master/docs/Nested-Iterators.md]
   [1]:TooManyMethods: Board has at least 16 methods [https://github.com/troessner/reek/blob/master/docs/Too-Many-Methods.md]
-  [92]:TooManyStatements: Board#print_board has approx 9 statements [https://github.com/troessner/reek/blob/master/docs/Too-Many-Statements.md]
-  [127]:UtilityFunction: Board#move_piece_in_square doesn't depend on instance state (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Utility-Function.md]
+  [86]:TooManyStatements: Board#print_board has approx 9 statements [https://github.com/troessner/reek/blob/master/docs/Too-Many-Statements.md]
+  [121]:UtilityFunction: Board#move_piece_in_square doesn't depend on instance state (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Utility-Function.md]
+
 ```
 
 Ponieważ plik zawiera wiele zapachów zajmę się tylko jego pięcioma wybranymi.
 
-##Duplicate Method
+##Duplicate Method II
 
-[30, 30, 32, 32]:DuplicateMethodCall
+```Ruby
+[14, 15, 16, 17, 20]:DuplicateMethodCall: Board#initialize calls 'colors[0]' 5 times
+```
+
+Przed refaktoryzacją:
+```Ruby
+  def initialize()
+    @board = {}
+    colors = [Square::BLACK, Square::WHITE]
+
+    (1..8).each do |row|
+      (1..8).each do |col|
+
+        # Place starting pieces on board
+        if (1..3).include?(row) && Square.new(colors[0]).color == Square::BLACK
+          Square.new(colors[0]).checker_piece = Piece.new(Piece::BLACK)
+        elsif (6..8).include?(row) && Square.new(colors[0]).color == Square::BLACK
+          Square.new(colors[0]).checker_piece = Piece.new(Piece::RED)
+        end
+
+        @board[[row,col]] = Square.new(colors[0])
+
+        colors << colors.delete_at(0) unless col == 8
+      end
+    end
+  end
+```
+
+Po refaktoryzacji:
+```Ruby
+  def initialize()
+    @board = {}
+    colors = [Square::BLACK, Square::WHITE]
+
+    (1..8).each do |row|
+      (1..8).each do |col|
+        sq = Square.new(colors[0])
+        # Place starting pieces on board
+        if (1..3).include?(row) && sq.color == Square::BLACK
+          sq.checker_piece = Piece.new(Piece::BLACK)
+        elsif (6..8).include?(row) && sq.color == Square::BLACK
+          sq.checker_piece = Piece.new(Piece::RED)
+        end
+
+        @board[[row,col]] = sq
+
+        colors << colors.delete_at(0) unless col == 8
+      end
+    end
+  end
+```
+Duplicate Method jest jednym z najłatwiej zauważalnych zapachów kodu i zarazem naprostrzym do naprawienia. Zachodzi gdy dane wywoływane w metodzie są wykonywane dwa lub więcej razy w tym samym kontekscie.
+Metoda odpowiedzialna za rozstawianie pionków w której powtarza się 4 razy Square.new(colors[0]), a ponieważ jest to stała wartość, która nie zmienia się co wywołanie, zatem optymalniej było by wywoływać ją tylko raz, a wynik przekazywać w innych miejscach.
+
+##Duplicate Method II
+
+```Ruby
+[28, 28, 30, 30]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source)' 4 times
+```
 
 Przed refaktoryzacją:
 ```Ruby
@@ -118,13 +178,14 @@ Po refaktoryzacji:
     end
   end
 ```
-Duplicate Method jest jednym z najłatwiej zauważalnych zapachów kodu i zarazem naprostrzym do naprawienia. Zachodzi gdy dane wywoływane w metodzie są wykonywane dwa lub więcej razy w tym samym kontekscie.
-W moim przypadku mam klasę reprezentującą tablicę do gry w warcaby, gdzie metoda check_point_location
+Kolejny przypadek zapachu typu Duplicate Method, gdzie mam klasę reprezentującą tablicę do gry w warcaby, gdzie metoda check_point_location
 sprawdza położenie względem tablicy za każdym razem przekazując ten sam argument. Dlatego lepszym rozwiązaniem będzie wykonanie pojedynczego połącznia i przechowywanie jego wyniku lokalnie.
 
 ## Data Clump
 
-[53, 57, 61]:DataClump:
+```Ruby
+ [50, 54, 58]:DataClump: Board takes parameters ['source_loc', 'source_move'] to 3 methods 
+```
 
 Przed refaktoryzajcą:
 ```Ruby
@@ -168,7 +229,10 @@ Tutaj mamy do czynienia z metodami zawierającymi tę same pary parametrów. W t
 
 ##Boolean/Control Parameter
 
-[70]:BooleanParameter:
+```Ruby
+  [66]:BooleanParameter: Board#on_board? has boolean parameter 'strict' [https://github.com/troessner/reek/blob/master/docs/Boolean-Parameter.md]
+  [68]:ControlParameter: Board#on_board? is controlled by argument 'strict' [https://github.com/troessner/reek/blob/master/docs/Control-Parameter.md]
+```
 
 Przed refaktoryzacją:
 ```Ruby
