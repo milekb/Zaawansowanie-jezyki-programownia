@@ -90,7 +90,9 @@ board.rb -- 25 warnings:
 Ponieważ plik zawiera wiele zapachów zajmę się tylko jego pięcioma wybranymi.
 
 ##Duplicate Method
+
 [30, 30, 32, 32]:DuplicateMethodCall
+
 Przed refaktoryzacją:
 ```Ruby
    def check_point_location
@@ -121,7 +123,9 @@ W moim przypadku mam klasę reprezentującą tablicę do gry w warcaby, gdzie me
 sprawdza położenie względem tablicy za każdym razem przekazując ten sam argument. Dlatego lepszym rozwiązaniem będzie wykonanie pojedynczego połącznia i przechowywanie jego wyniku lokalnie.
 
 ## Data Clump
+
 [53, 57, 61]:DataClump:
+
 Przed refaktoryzajcą:
 ```Ruby
   def course(source_pawn, source_move)
@@ -163,6 +167,7 @@ Po refaktoryzacji:
 Tutaj mamy do czynienia z metodami zawierającymi tę same pary parametrów. W takim przypadku taki obiekt może być strukturą lokalizacji reperezentującą daną parę informacji na temat pionka.
 
 ##Boolean/Control Parameter
+
 [70]:BooleanParameter:
 
 Przed refaktoryzacją:
