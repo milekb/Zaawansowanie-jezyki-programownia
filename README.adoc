@@ -51,9 +51,12 @@ W moim projekcie zająłem się refaktoryzacją projektu "Warcaby" napisanego pr
 
 * Kiedy istnieje kilka możliwych bić, gracz musi wykonać maksymalne (tzn. takie, w którym zbije największą liczbę pionów lub damek przeciwnika).
 
-* Podczas bicia nie można przeskakiwać więcej niż jeden raz przez ten sam pion (damkę).[
+* Podczas bicia nie można przeskakiwać więcej niż jeden raz przez ten sam pion (damkę).
 
+
+// dodać obrazek
 image::warcaby.jpg[Warcaby]
+
 
 ## Refaktoryzacja
 
