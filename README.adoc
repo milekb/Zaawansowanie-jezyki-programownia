@@ -115,7 +115,7 @@ Po refaktoryzacji:
       'Incorrect data'
     end
   end
-
+```
 Duplicate Method jest jednym z najłatwiej zauważalnych zapachów kodu i zarazem naprostrzym do naprawienia. Zachodzi gdy dane wywoływane w metodzie są wykonywane dwa lub więcej razy w tym samym kontekscie.
 W moim przypadku mam klasę reprezentującą tablicę do gry w warcaby, gdzie metoda check_point_location
 sprawdza położenie względem tablicy za każdym razem przekazując ten sam argument. Dlatego lepszym rozwiązaniem będzie wykonanie pojedynczego połącznia i przechowywanie jego wyniku lokalnie.
