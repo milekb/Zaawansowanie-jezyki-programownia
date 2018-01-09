@@ -1,0 +1,230 @@
+# Zaawansowane Języki Programowania, 17/18
+:source-highlighter: pygments
+:pygments-style: manni
+:experimental:
+:imagesdir: ./images
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:caution-caption: pass:[&#9888;]
+:important-caption: :white_check_mark:
+:note-caption: :notes:
+:tip-caption: pass:[&#128161;]
+:warning-caption: :warning:
+endif::[]
+
+// https://github.com/scotch-io/All-Github-Emoji-Icons
+
+// asciidoctor -a linkcss README.adoc
+
+
+## Projekt1 - Refactoring
+
+W moim projekcie zająłem się refaktoryzacją projektu "Warcaby" napisanego przez justinbburris. Jest to gra planszowa posiadająca poniższe zasady:
+*Gra rozgrywana jest na ciemnych polach planszy o rozmiarze 8 × 8 pól.
+
+*Gra warcaby klasyczne (określana też warcabami brazylijskimi) jest rozgrywana na planszy 8x8 pól pokolorowanych na przemian na kolor jasny i ciemny.
+
+*Każdy gracz rozpoczyna grę z dwunastoma pionami (jeden koloru białego, drugi – czerwonego) ustawionymi na ciemniejszych polach planszy, w sposób przedstawiony na poniższej ilustracji.
+
+*Jako pierwszy ruch wykonuje grający pionami białymi, po czym gracze wykonują na zmianę kolejne ruchy.
+
+*Celem gry jest zbicie wszystkich pionów przeciwnika (w tym damek – patrz niżej) albo zablokowanie wszystkich, które pozostają na planszy, pozbawiając przeciwnika możliwości wykonania ruchu. Jeśli żaden z graczy nie jest w stanie tego osiągnąć (każdy z graczy wykona po 15 ruchów damkami bez zmniejszania liczby pionów pozostających na planszy), następuje remis.
+
+*Piony mogą poruszać się o jedno pole do przodu po przekątnej (na ukos) na wolne pola.
+
+*Bicie pionem następuje przez przeskoczenie sąsiedniego pionu (lub damki) przeciwnika na pole znajdujące się tuż za nim po przekątnej (pole to musi być wolne). Zbite piony są usuwane z planszy po zakończeniu ruchu.
+
+*Piony mogą bić zarówno do przodu, jak i do tyłu.
+
+*W jednym ruchu wolno wykonać więcej niż jedno bicie tym samym pionem, przeskakując przez kolejne piony (damki) przeciwnika.
+
+*Bicia są obowiązkowe.
+
+*Pion, który dojdzie do ostatniego rzędu planszy, staje się damką, przy czym jeśli w jednym ruchu w wyniku wielokrotnego bicia przejdzie przez ostatni rząd (linię przemiany), ale nie zakończy na niej ruchu, to nie staje się damką i kończy ruch jako pionek.
+
+*Kiedy pion staje się damką, kolejny ruch przypada dla przeciwnika.
+
+*Damki mogą poruszać się w jednym ruchu o dowolną liczbę pól do przodu lub do tyłu po przekątnej, zatrzymując się na wolnych polach.
+
+*Bicie damką jest możliwe z dowolnej odległości po linii przekątnej i następuje przez przeskoczenie pionu (lub damki) przeciwnika, za którym musi znajdować się co najmniej jedno wolne pole – damka przeskakuje na dowolne z tych pól i może kontynuować bicie (na tej samej lub prostopadłej linii).
+
+*Kiedy istnieje kilka możliwych bić, gracz musi wykonać maksymalne (tzn. takie, w którym zbije największą liczbę pionów lub damek przeciwnika).
+
+*Podczas bicia nie można przeskakiwać więcej niż jeden raz przez ten sam pion (damkę).[
+
+image::warcaby.jpg[Warcaby]
+
+##Refaktoryzacja
+
+Wykorzystując narzędzie Reek sprawdziłem ilość zapachów w pliku board.rb. Otrzymałem następującą listę:
+
+```Ruby
+board.rb -- 25 warnings:
+  [70]:BooleanParameter: Board#on_board? has boolean parameter 'strict' [https://github.com/troessner/reek/blob/master/docs/Boolean-Parameter.md]
+  [72]:ControlParameter: Board#on_board? is controlled by argument 'strict' [https://github.com/troessner/reek/blob/master/docs/Control-Parameter.md]
+  [53, 57, 61]:DataClump: Board takes parameters ['source_loc', 'source_move'] to 3 methods [https://github.com/troessner/reek/blob/master/docs/Data-Clump.md]
+  [30, 30, 32, 32]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source)' 4 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [30, 32]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source).x' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [30, 32]:DuplicateMethodCall: Board#check_point_location calls '@point_source.point_at(@source).y' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [10, 11]:DuplicateMethodCall: Board#initialize calls '(1..8).each' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [15, 17]:DuplicateMethodCall: Board#initialize calls 'sq.color == Square::BLACK' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [15, 17]:DuplicateMethodCall: Board#initialize calls 'sq.color' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [94, 100]:DuplicateMethodCall: Board#print_board calls '(1..8).each' 2 times [https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md]
+  [15, 16, 17, 18]:FeatureEnvy: Board#initialize refers to 'sq' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Feature-Envy.md]
+  [73, 75]:FeatureEnvy: Board#on_board? refers to 'position' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Feature-Envy.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@board2' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@loc' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@move' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@point_source' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@result' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@results' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:InstanceVariableAssumption: Board assumes too much for instance variable '@source' [https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md]
+  [1]:IrresponsibleModule: Board has no descriptive comment [https://github.com/troessner/reek/blob/master/docs/Irresponsible-Module.md]
+  [11]:NestedIterators: Board#initialize contains iterators nested 2 deep [https://github.com/troessner/reek/blob/master/docs/Nested-Iterators.md]
+  [100]:NestedIterators: Board#print_board contains iterators nested 2 deep [https://github.com/troessner/reek/blob/master/docs/Nested-Iterators.md]
+  [1]:TooManyMethods: Board has at least 16 methods [https://github.com/troessner/reek/blob/master/docs/Too-Many-Methods.md]
+  [92]:TooManyStatements: Board#print_board has approx 9 statements [https://github.com/troessner/reek/blob/master/docs/Too-Many-Statements.md]
+  [127]:UtilityFunction: Board#move_piece_in_square doesn't depend on instance state (maybe move it to another class?) [https://github.com/troessner/reek/blob/master/docs/Utility-Function.md]
+```
+
+Ponieważ plik zawiera wiele zapachów zajmę się tylko jego pięcioma wybranymi.
+
+##Duplicate Method
+[30, 30, 32, 32]:DuplicateMethodCall
+Przed refaktoryzacją:
+```Ruby
+   def check_point_location
+     if @point_source.point_at(@source).x > 8 && @point_source.point_at(@source).y < 8
+       'On board'
+     elsif @point_source.point_at(@source).x > 0 && @point_source.point_at(@source).y > 0
+       'Out of board'
+     else
+       'Incorrect data'
+     end
+   end
+```
+Po refaktoryzacji:
+```Ruby
+  def check_point_location
+    point_loc = @point_source.point_at(@source)
+    if point_loc.x > 8 && point_loc.y < 8
+      'On board'
+    elsif point_loc.pos > 0
+      'Out of board'
+    else
+      'Incorrect data'
+    end
+  end
+
+Duplicate Method jest jednym z najłatwiej zauważalnych zapachów kodu i zarazem naprostrzym do naprawienia. Zachodzi gdy dane wywoływane w metodzie są wykonywane dwa lub więcej razy w tym samym kontekscie.
+W moim przypadku mam klasę reprezentującą tablicę do gry w warcaby, gdzie metoda check_point_location
+sprawdza położenie względem tablicy za każdym razem przekazując ten sam argument. Dlatego lepszym rozwiązaniem będzie wykonanie pojedynczego połącznia i przechowywanie jego wyniku lokalnie.
+
+## Data Clump
+[53, 57, 61]:DataClump:
+Przed refaktoryzajcą:
+```Ruby
+  def course(source_pawn, source_move)
+    @result.course(from: [source_loca, source_move], to: [@loca, @move])
+  end
+
+  def length(source_pawn, source_move)
+    @result.length(from: [source_loca, source_move], to: [@loca, @move])
+  end
+
+  def is_empty?(source_pawn, source_move)
+    @result.borders?(from: [source_loca, source_move], to: [@loca, @move])
+  end
+
+  def valid?
+    @results.all_true?
+  end
+```
+Po refaktoryzacji:
+```Ruby
+  Pawn = Struct.new(:loca, :move)
+
+  def course(source_pawn)
+    @result.course(from: source_pawn, to: @pawn)
+  end
+
+  def length(source_pawn)
+    @result.length(from: source_pawn, to: @pawn)
+  end
+
+  def is_empty?(source_pawn)
+    @result.borders?(from: source_pawn, to: @pawn)
+  end
+
+  def valid?
+    @results.all_true?
+  end
+```
+Tutaj mamy do czynienia z metodami zawierającymi tę same pary parametrów. W takim przypadku taki obiekt może być strukturą lokalizacji reperezentującą daną parę informacji na temat pionka.
+
+##Boolean/Control Parameter
+[70]:BooleanParameter:
+
+Przed refaktoryzacją:
+```Ruby
+   def on_board?(strict = true)
+     position = @pawn.map(&:default_position).uniq
+     if strict
+       position == ['out']
+     else
+       position.include?('out')
+     end
+   end
+```
+Po refaktoryzacji:
+```Ruby
+  def out_of_board?
+  position == ['out']
+  end
+
+  def on_board?
+    position.include?('out')
+  end
+
+  private
+
+  def position
+    @board2.map(&:default_position).uniq
+  end
+```
+Predykat ten służy zapewne do określenia czy dany pionek jest na tablicy czy nie. Ten rodzaj kodu nazywa się boolowskim zapachem parametru. W tym przypadku najlepszym sposobem będzie podzilenie predykatu na dedykowane metody, z których każda implementuje jedną ze ścieżek kodu.
+
+
+##Replace temp with query/Primitive Obsession
+
+Przed refaktoryzacją:
+```Ruby
+   def initialize length, width, moves
+     @length = length
+     @width  = width
+     @moves = moves
+   end
+
+   def volume
+     area = length * width
+     area * moves
+   end
+```
+Po refraktoryzacji:
+```Ruby
+  def initialize length, width, height
+    @length = length
+    @width  = width
+    @moves = moves
+  end
+
+  def distance
+    area * moves
+  end
+
+  def area
+    length * width
+  end
+```
+
+W tym wypadku umieszczone zostały wyniki wyrażenia w zmiennej lokalnej. W celu refaktoryzacji przeniesione zostało całe wyrażenie do osobnej metody i zwrócowny zostaje wynik. Wówczas będzie można używać nowych metod w innych funkcjach. Dzięki refaktoryzacji Extract Method na tym etapie możliwe jest zbudowanie podstawy dla long method w późniejszej częsci.
