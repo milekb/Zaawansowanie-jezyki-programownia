@@ -55,7 +55,7 @@ W moim projekcie zająłem się refaktoryzacją projektu "Warcaby" napisanego pr
 
 
 // dodać obrazek
-image::warcaby.jpg[Sunset,300,200]
+image::warcaby.png[Warcaby, align="center"]
 
 
 ## Refaktoryzacja
